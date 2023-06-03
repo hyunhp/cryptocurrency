@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
+
 import time
 from tqdm import tqdm
 import os
