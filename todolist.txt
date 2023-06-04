@@ -1,0 +1,8 @@
+[done]
+1. download csv file in website
+
+[on-going]
+[eda] forecasting price and return value and chart
+[ead] save into word file
+[update] make template in csv 
+[update] need to change 4. Forecasting Next weeks
