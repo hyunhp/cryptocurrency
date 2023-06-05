@@ -17,34 +17,26 @@ from tqdm import tqdm
 import os
 import pandas as pd
 
+from batch_target import extract_batch_coin
+
 import datetime
-
-# TODAY Parameter
-# Get the current date
-current_date = datetime.datetime.now()
-formatted_date = current_date.strftime('%Y_%m_%d')
-
-# Get the day of the week as an integer (Monday is 0 and Sunday is 6)
-day_of_week = current_date.weekday()
-
-# Coin name
-coin_name = pd.read_csv('.\\document\\coin_download_link.csv')
-batch_coin = coin_name.loc[coin_name['Batch_day'] == day_of_week].reset_index(drop=True)
-
-# GLOBAL VARIABLE
-download_path = os.getcwd() + '\\historical data\\' + str(day_of_week)
-# Set the download path
-if not os.path.exists(download_path):
-    os.makedirs(download_path)
-
-# Set the failed path 
-if not os.path.exists(download_path + '\\failed'):
-    os.makedirs(download_path + '\\failed')
-    
 chrome_path = r'.\\99. setting\\chromedriver'
 
+def download_makedirs(day_of_week):
+    # GLOBAL VARIABLE
+    download_path = os.getcwd() + '\\historical data\\' + str(day_of_week)
+    # Set the download path
+    if not os.path.exists(download_path):
+        os.makedirs(download_path)
+
+    # Set the failed path 
+    if not os.path.exists(download_path + '\\failed'):
+        os.makedirs(download_path + '\\failed')
+    return download_path
+    
 # download function
-def download_coin_csv(download_path, batch_coin):
+def download_coin_csv(download_path, batch_coin, current_date):
+    formatted_date = current_date.strftime('%Y_%m_%d')
 
     # Set the download preferences
     prefs = {
@@ -108,4 +100,6 @@ def download_coin_csv(download_path, batch_coin):
         
 
 if __name__ == '__main__':
-    download_coin_csv(download_path, batch_coin)
+    batch_coin, day_of_week, current_date = extract_batch_coin()
+    download_path = download_makedirs(day_of_week)
+    download_coin_csv(download_path, batch_coin, current_date)
