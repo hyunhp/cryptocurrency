@@ -1,8 +1,9 @@
 # cryptocurrency
 Forecast cryptocurrency by data scraping and auto document
 
-# Batch period
-1. download_csv.py
+# How to use
+1. download_csv.py 
+- If data is not saved well, need to download manually 
 2. forecast_model.py
 3. auto_report.py
 
@@ -15,3 +16,6 @@ Forecast cryptocurrency by data scraping and auto document
 - purpose: Download coin csv which contains whole period information
 - return : Downloaded coin csv files and failed coins in csv
 - to do  : Need to add bypass pop up cases
+
+# Need to update
+[] dwonload_csv pop up case
