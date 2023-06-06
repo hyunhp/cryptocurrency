@@ -18,4 +18,4 @@ Forecast cryptocurrency by data scraping and auto document
 - to do  : Need to add bypass pop up cases
 
 # Need to update
-[] dwonload_csv pop up case
+[ ] download_csv pop up case
