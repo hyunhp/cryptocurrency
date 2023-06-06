@@ -1,6 +1,11 @@
 # cryptocurrency
 Forecast cryptocurrency by data scraping and auto document
 
+# Batch period
+1. download_csv.py
+2. forecast_model.py
+3. auto_report.py
+
 1. batch_target.py
 purpose: Check daily batch target coin 
 return : Batch coin dataframe and current date

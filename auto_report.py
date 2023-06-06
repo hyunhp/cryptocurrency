@@ -40,7 +40,7 @@ def auto_word_func():
     # Create a new Word document
     doc = Document()
 
-    header = doc.add_heading(f'{coin_name} Trading Insights: A Comprehensive Financial Report', level=1)
+    header = doc.add_heading(f'{coin_name} Trading Insights: A Comprehensive Financial Report ({week_month_date})', level=1)
 
     # Access the style of the header
     header_style = header.style
@@ -52,7 +52,7 @@ def auto_word_func():
 
     # ADD IMAGE
     doc.add_picture(f'{forecasted_image_path}/period/{coin_symbol}_period_{formatted_date}.png', width=Inches(6), height=Inches(4))
-    explanation_period = doc.add_paragraph('Explanation: Latest 6 months price and forecasted 7 days.')
+    explanation_period = doc.add_paragraph("Explanation: Latest 6 months' price and forecasted 7 days.")
 
     doc.add_picture(f'{forecasted_image_path}/whole/{coin_symbol}_whole_{formatted_date}.png', width=Inches(6), height=Inches(4))
     explanation_whole = doc.add_paragraph('Explanation: Whole price and forecasted 7 days.')
