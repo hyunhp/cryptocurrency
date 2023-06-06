@@ -111,14 +111,16 @@ class forecast_model:
         plt.legend(loc='best')
         plt.savefig(f'{image_path}\\whole\\{symbol}_whole_{formatted_date}.png')
 
-    def forecast_values(self, train_df, forecast_index, forecast_values, percentage_change):
+    def save_forecast_values(self, train_df, forecast_index, forecast_values, percentage_change):
         # Create a dataframe with predicted values and percentage change
         forecast_df = pd.DataFrame({
-            'Base Date': train_df.index[-1],
-            'Date': forecast_index + pd.Timedelta(days=1),
+            'Base Date': train_df.index[-1].strftime('%Y_%m_%d'),
+            'Date': (forecast_index + pd.Timedelta(days=1)).strftime('%Y_%m_%d'),
             'Base Price': [train_df['price'].iloc[-1]] * 7,
             'Forecast': forecast_values,
-            'Percentage Change': percentage_change
+            'Percentage Change': percentage_change,
+            'Market Cap': self.dataframe['market_cap'].iloc[-1],
+            'Total Volume' : self.dataframe['total_volume'].iloc[-1]
         }).reset_index(drop=True)
         forecast_df.to_csv(f'{data_path}\\{symbol}_data_{formatted_date}.csv')
 
@@ -136,4 +138,4 @@ if __name__ == '__main__':
         forecast_coin.period_chart(train_df, forecast_index, forecast_values, conf_int)
         forecast_coin.whole_chart(forecast_index, forecast_values, conf_int)
 
-        forecast_df = forecast_coin.forecast_values(train_df, forecast_index, forecast_values, percentage_change)
+        forecast_df = forecast_coin.save_forecast_values(train_df, forecast_index, forecast_values, percentage_change)
