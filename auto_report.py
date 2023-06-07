@@ -101,6 +101,15 @@ if __name__ == '__main__':
         market_cap      = "{:,.0f}".format(forcasted_data['Market Cap'].iloc[-1])
         forcasted_data.drop(['Market Cap', 'Total Volume'], axis=1 , inplace=True)
 
+        '''
+        NEED TO ADD MATRIX By forecasted_data
+        - data format 
+        = Date          : YYYY_MM_DD    
+        = Base Price    : {0:.4f}
+        = Forecast      : {0:.4f}
+        = Change        : {0:.2f}%
+        '''
+
         # coin text template
         body = coin_text_df.loc[coin_text_df['coin_name'] == coin_name, 'template'].values[0]
         start_index = body.find(model_pargraph)

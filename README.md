@@ -6,6 +6,7 @@ Forecast cryptocurrency by data scraping and auto document
 2. forecast_model.py
 3. auto_report.py
 
+# Explanation
 1. batch_target.py
 purpose: Check daily batch target coin 
 return : Batch coin dataframe and current date
@@ -14,3 +15,10 @@ return : Batch coin dataframe and current date
 purpose: Download coin csv which contains whole period information
 return : Downloaded coin csv files and failed coins in csv
 to do  : Need to add bypass pop up cases
+
+3. forecast_model.py
+
+4. auto_report.py
+to do :
+(1) "- \n" problem case
+(2) Add metrix (Forecasted value and percentage change)
