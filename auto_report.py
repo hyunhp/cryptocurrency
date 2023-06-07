@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
         '''
         NEED TO ADD MATRIX By forecasted_data
-        - data format 
+        - data format
         = Date          : YYYY_MM_DD    
         = Base Price    : {0:.4f}
         = Forecast      : {0:.4f}
