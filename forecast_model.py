@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from statsmodels.tsa.arima.model import ARIMA
+import dataframe_image as dfi
 
 import os
 from batch_target import extract_batch_coin
@@ -19,17 +20,33 @@ coin_lst = [i for i in os.listdir(download_path) if '.csv' in i]
 
 # Makedir for saving forecasted images
 def save_forecasted_makedirs(day_of_week, formatted_date):
-    image_path = os.getcwd() + '\\forecasted image\\' + str(day_of_week) + f'\\{formatted_date}'
-    data_path = os.getcwd() + '\\forecasted data\\' + str(day_of_week) + f'\\{formatted_date}'
+    image_path  = os.getcwd() + '\\forecasted image\\' + str(day_of_week) + f'\\{formatted_date}'
+    data_path   = os.getcwd() + '\\forecasted data\\' + str(day_of_week) + f'\\{formatted_date}'
+    chart_path  = os.getcwd() + '\\forecasted chart\\' + str(day_of_week) + f'\\{formatted_date}'
+
     # Set the save image path
     if not os.path.exists(image_path):
-        os.makedirs(image_path +'\\period')
-        os.makedirs(image_path +'\\whole')
+        os.makedirs(image_path + '\\period')
+        os.makedirs(image_path + '\\whole')
     
     # Set the save dataframe path
     if not os.path.exists(data_path):
         os.makedirs(data_path)
-    return image_path, data_path
+    
+    # Set the save chart path
+    if not os.path.exists(chart_path):
+        os.makedirs(chart_path)
+
+    return image_path, data_path, chart_path
+
+def color_negative_positive(value):
+    if isinstance(value, (int, float)) and value < 0:
+        color = 'blue'
+    elif isinstance(value, (int, float)) and value >= 0:
+        color = 'red'
+    else:
+        color = 'black'
+    return 'color: {}'.format(color)
 
 class forecast_model:
     def __init__(self, dataframe, max_date, future_days, image_path, data_path):
@@ -111,21 +128,43 @@ class forecast_model:
         plt.legend(loc='best')
         plt.savefig(f'{image_path}\\whole\\{symbol}_whole_{formatted_date}.png')
 
+    def save_matrix(self, forecast_df):
+        columns = ['Base Date',  'Forecast Date', 
+                   'Base Price', 'Forecast Price',
+                   'Percentage Change']
+        styled_df = forecast_df[columns].style \
+            .set_properties(**{'text-align': 'center'}) \
+            .set_table_styles([{'selector': 'th', 'props': [('background-color', '#E7DDE7')]}]) \
+            .hide(axis=0) \
+            .format(r"{:.2}%", subset=['Percentage Change']) \
+            .applymap(color_negative_positive)
+        
+        # Adjust header height
+        styled_df = styled_df.set_table_attributes('style="border-collapse: collapse; font-size: 12px; '
+                                                'table-layout: fixed; word-wrap: break-word; '
+                                                'margin-bottom: 10px; margin-top: 10px; '
+                                                'height: auto !important;"')
+
+        image_path = f'{chart_path}\\{symbol}_chart_{formatted_date}.png'
+        dfi.export(styled_df, image_path)
+
     def save_forecast_values(self, train_df, forecast_index, forecast_values, percentage_change):
         # Create a dataframe with predicted values and percentage change
         forecast_df = pd.DataFrame({
             'Base Date': train_df.index[-1].strftime('%Y_%m_%d'),
-            'Date': (forecast_index + pd.Timedelta(days=1)).strftime('%Y_%m_%d'),
+            'Forecast Date': (forecast_index + pd.Timedelta(days=1)).strftime('%Y_%m_%d'),
             'Base Price': [train_df['price'].iloc[-1]] * 7,
-            'Forecast': forecast_values,
+            'Forecast Price': forecast_values,
             'Percentage Change': percentage_change,
             'Market Cap': self.dataframe['market_cap'].iloc[-1],
             'Total Volume' : self.dataframe['total_volume'].iloc[-1]
         }).reset_index(drop=True)
         forecast_df.to_csv(f'{data_path}\\{symbol}_data_{formatted_date}.csv')
 
+        return forecast_df
+
 if __name__ == '__main__':
-    image_path, data_path = save_forecasted_makedirs(day_of_week, formatted_date)
+    image_path, data_path, chart_path = save_forecasted_makedirs(day_of_week, formatted_date)
 
     for coin in tqdm(coin_lst):
         coin_df = pd.read_csv(download_path + '/' + coin)
@@ -137,5 +176,6 @@ if __name__ == '__main__':
         train_df, forecast_index, forecast_values, conf_int, percentage_change = forecast_coin.model()
         forecast_coin.period_chart(train_df, forecast_index, forecast_values, conf_int)
         forecast_coin.whole_chart(forecast_index, forecast_values, conf_int)
-
+        
         forecast_df = forecast_coin.save_forecast_values(train_df, forecast_index, forecast_values, percentage_change)
+        forecast_coin.save_matrix(forecast_df)

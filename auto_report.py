@@ -52,14 +52,18 @@ def auto_word_func():
 
     # ADD IMAGE
     doc.add_picture(f'{forecasted_image_path}/period/{coin_symbol}_period_{formatted_date}.png', width=Inches(6), height=Inches(4))
-    explanation_period = doc.add_paragraph("Explanation: Latest 6 months' price and forecasted 7 days.")
+    explanation_period = doc.add_paragraph("Explanation: Latest 6 months price and 7 days forecasted price.")
+
+    doc.add_picture(f'{forecated_chart_path}/{coin_symbol}_chart_{formatted_date}.png', width=Inches(4), height=Inches(3))
+    explanation_chart = doc.add_paragraph('Explanation: Forecsted 7 days price and percentage change.')
 
     doc.add_picture(f'{forecasted_image_path}/whole/{coin_symbol}_whole_{formatted_date}.png', width=Inches(6), height=Inches(4))
     explanation_whole = doc.add_paragraph('Explanation: Whole price and forecasted 7 days.')
 
     # Set the paragraph alignment to center
-    explanation_period.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    explanation_period.alignment= WD_PARAGRAPH_ALIGNMENT.CENTER
     explanation_whole.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    explanation_chart.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
     # Set the font size to 8 for each explanation separately
     font_period = explanation_period.runs[0].font
@@ -71,7 +75,6 @@ def auto_word_func():
     doc.add_paragraph(f'{second_body}')
 
     doc.save(f'{word_save_path}{coin_name}_trending_report.docx')
-
 
 # 1. 
 batch_coin, day_of_week, current_date = extract_batch_coin()
@@ -85,6 +88,7 @@ word_save_path = word_makedirs(day_of_week)
 # 2. locate download folders
 forecasted_data_path  = f'./forecasted data/{str(day_of_week)}/{formatted_date}/' 
 forecasted_image_path = f'./forecasted image/{str(day_of_week)}/{formatted_date}/'
+forecated_chart_path  = f'./forecasted chart/{str(day_of_week)}/{formatted_date}/'
 
 coin_text_df = pd.read_csv('./document/coin_text.csv')
 model_pargraph = "4. Forecasting Next Week's Price with A.I. Model"
