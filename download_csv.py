@@ -16,24 +16,34 @@ import time
 from tqdm import tqdm
 import os
 import pandas as pd
+import shutil
 
 from batch_target import extract_batch_coin
 
 import datetime
 chrome_path = r'.\\99. setting\\chromedriver'
 
-def download_makedirs(day_of_week):
+def download_makedirs(day_of_week, delete : False):
     # GLOBAL VARIABLE
-    download_path = os.getcwd() + '\\historical data\\' + str(day_of_week)
-    # Set the download path
-    if not os.path.exists(download_path):
+    download_path   = os.getcwd() + '\\historical data\\' + str(day_of_week)
+    failed_path     = os.path.join(download_path, 'failed')
+
+    if delete :
+        # Delete and recreate the download path if it already exists
+        if os.path.exists(download_path):
+            shutil.rmtree(download_path)
         os.makedirs(download_path)
+    else :
+        # Set the download path
+        if not os.path.exists(download_path):
+            os.makedirs(download_path)
 
     # Set the failed path 
     if not os.path.exists(download_path + '\\failed'):
         os.makedirs(download_path + '\\failed')
+        
     return download_path
-    
+
 # download function
 def download_coin_csv(download_path, batch_coin, current_date):
     formatted_date = current_date.strftime('%Y_%m_%d')
@@ -101,5 +111,5 @@ def download_coin_csv(download_path, batch_coin, current_date):
 
 if __name__ == '__main__':
     batch_coin, day_of_week, current_date = extract_batch_coin()
-    download_path = download_makedirs(day_of_week)
+    download_path = download_makedirs(day_of_week, delete=True)
     download_coin_csv(download_path, batch_coin, current_date)

@@ -14,7 +14,7 @@ warnings.filterwarnings('ignore')
 # Get daily batch coin information
 batch_coin, day_of_week, current_date = extract_batch_coin()
 formatted_date = current_date.strftime('%Y_%m_%d')
-download_path = download_makedirs(day_of_week)
+download_path = download_makedirs(day_of_week, delete=False)
 
 coin_lst = [i for i in os.listdir(download_path) if '.csv' in i]
 
@@ -137,7 +137,8 @@ class forecast_model:
             .set_table_styles([{'selector': 'th', 'props': [('background-color', '#E7DDE7')]}]) \
             .hide(axis=0) \
             .format(r"{:.2}%", subset=['Percentage Change']) \
-            .applymap(color_negative_positive)
+            .applymap(color_negative_positive, 
+                      subset=pd.IndexSlice[:, ['Percentage Change']])  # Apply only to 'Percentage Change' column
         
         # Adjust header height
         styled_df = styled_df.set_table_attributes('style="border-collapse: collapse; font-size: 12px; '
@@ -165,7 +166,6 @@ class forecast_model:
 
 if __name__ == '__main__':
     image_path, data_path, chart_path = save_forecasted_makedirs(day_of_week, formatted_date)
-
     for coin in tqdm(coin_lst):
         coin_df = pd.read_csv(download_path + '/' + coin)
         symbol = coin.split('-')[0]

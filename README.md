@@ -16,3 +16,6 @@ Forecast cryptocurrency by data scraping and auto document
 purpose: Download coin csv which contains whole period information
 return : Downloaded coin csv files and failed coins in csv
 to do  : Need to add bypass pop up cases
+
+# To do list
+1. There are some cases that after '-' sentences are changed in line

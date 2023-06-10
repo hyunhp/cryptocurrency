@@ -54,7 +54,7 @@ def auto_word_func():
     doc.add_picture(f'{forecasted_image_path}/period/{coin_symbol}_period_{formatted_date}.png', width=Inches(6), height=Inches(4))
     explanation_period = doc.add_paragraph("Explanation: Latest 6 months price and 7 days forecasted price.")
 
-    doc.add_picture(f'{forecated_chart_path}/{coin_symbol}_chart_{formatted_date}.png', width=Inches(4), height=Inches(3))
+    doc.add_picture(f'{forecated_chart_path}/{coin_symbol}_chart_{formatted_date}.png', width=Inches(3), height=Inches(2.25))
     explanation_chart = doc.add_paragraph('Explanation: Forecsted 7 days price and percentage change.')
 
     doc.add_picture(f'{forecasted_image_path}/whole/{coin_symbol}_whole_{formatted_date}.png', width=Inches(6), height=Inches(4))
