@@ -51,13 +51,13 @@ def auto_word_func():
     doc.add_paragraph(f'{first_body}')
 
     # ADD IMAGE
-    doc.add_picture(f'{forecasted_image_path}/period/{coin_symbol}_period_{formatted_date}.png', width=Inches(6), height=Inches(4))
+    doc.add_picture(f'{forecasted_image_path}/period/{coin_symbol}_period_{formatted_date}.png', width=Inches(5), height=Inches(4))
     explanation_period = doc.add_paragraph("Explanation: Latest 6 months price and 7 days forecasted price.")
 
     doc.add_picture(f'{forecated_chart_path}/{coin_symbol}_chart_{formatted_date}.png', width=Inches(3), height=Inches(2.25))
     explanation_chart = doc.add_paragraph('Explanation: Forecsted 7 days price and percentage change.')
 
-    doc.add_picture(f'{forecasted_image_path}/whole/{coin_symbol}_whole_{formatted_date}.png', width=Inches(6), height=Inches(4))
+    doc.add_picture(f'{forecasted_image_path}/whole/{coin_symbol}_whole_{formatted_date}.png', width=Inches(5), height=Inches(4))
     explanation_whole = doc.add_paragraph('Explanation: Whole price and forecasted 7 days.')
 
     # Set the paragraph alignment to center
@@ -91,7 +91,7 @@ forecasted_image_path = f'./forecasted image/{str(day_of_week)}/{formatted_date}
 forecated_chart_path  = f'./forecasted chart/{str(day_of_week)}/{formatted_date}/'
 
 coin_text_df = pd.read_csv('./document/coin_text.csv')
-model_pargraph = "4. Forecasting Next Week's Price with A.I. Model"
+model_pargraph = "4.Forecasting Next Week's Price with A.I. Model"
 
 if __name__ == '__main__': 
     # 3. load text / image / data file
@@ -104,15 +104,6 @@ if __name__ == '__main__':
         total_volume    = "{:,.0f}".format(forcasted_data['Total Volume'].iloc[-1])
         market_cap      = "{:,.0f}".format(forcasted_data['Market Cap'].iloc[-1])
         forcasted_data.drop(['Market Cap', 'Total Volume'], axis=1 , inplace=True)
-
-        '''
-        NEED TO ADD MATRIX By forecasted_data
-        - data format
-        = Date          : YYYY_MM_DD    
-        = Base Price    : {0:.4f}
-        = Forecast      : {0:.4f}
-        = Change        : {0:.2f}%
-        '''
 
         # coin text template
         body = coin_text_df.loc[coin_text_df['coin_name'] == coin_name, 'template'].values[0]
