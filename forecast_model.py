@@ -100,7 +100,7 @@ class forecast_model:
 
         plt.xlabel('Date')
         plt.ylabel('Price ($)')
-        plt.title(f'{coin_name} Actual & Forecasted Prices')
+        plt.title(f'{coin_name} Actual & Forecasted Prices\n(Latest 6 months price and 7 days forecasted price)')
         plt.legend(loc='best')
         plt.savefig(f'{image_path}\\period\\{symbol}_period_{formatted_date}.png')
 
@@ -124,7 +124,7 @@ class forecast_model:
 
         plt.xlabel('Date')
         plt.ylabel('Price ($)')
-        plt.title(f'{coin_name} Actual & Forecasted Prices')
+        plt.title(f'{coin_name} Actual & Forecasted Prices\n(Whole price and forecasted 7 days)')
         plt.legend(loc='best')
         plt.savefig(f'{image_path}\\whole\\{symbol}_whole_{formatted_date}.png')
 
